@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import static sun.util.logging.LoggingSupport.log;
+import static org.telegram.telegrambots.logging.BotLogger.log;
+
 
 public class Bot extends TelegramLongPollingBot {
     private static Bot bot;
