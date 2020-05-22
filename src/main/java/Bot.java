@@ -131,7 +131,7 @@ public class Bot extends TelegramLongPollingBot {
         rowList.add(keyboardButtonsRow1);
         rowList.add(keyboardButtonsRow2);
         inlineKeyboardMarkup.setKeyboard(rowList);
-        String text = "Здравствуйте " + update.getMessage().getContact().getUserID();
+        String text = "Здравствуйте " + update.getMessage().getContact().getFirstName();
         return new SendMessage().setChatId(chatId).setText(text).setReplyMarkup(inlineKeyboardMarkup);
     }
 
