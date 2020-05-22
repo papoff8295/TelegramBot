@@ -28,7 +28,7 @@ public class Bot extends TelegramLongPollingBot {
     @Override
         public void onUpdateReceived(Update update) {
         if(update.hasMessage()) {
-            if(update.getMessage().getText().equals("Hello")){
+            if(update.getMessage().getText().toLowerCase().equals("hello")){
                 try {
                     execute(sendInlineKeyBoardMessage(update.getMessage().getChatId(), update));
                 } catch (TelegramApiException e) {
@@ -36,6 +36,7 @@ public class Bot extends TelegramLongPollingBot {
                 }
             } else {
                 String message = update.getMessage().getText();
+
                 sendMsg(update.getMessage().getChatId().toString(), message);
             }
         } else  if(update.hasCallbackQuery()) {
@@ -59,7 +60,7 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(chatId);
         sendMessage.setText(s);
-        setButtons(sendMessage);
+        //setButtons(sendMessage);
 
         try {
             execute(sendMessage);
@@ -86,10 +87,10 @@ public class Bot extends TelegramLongPollingBot {
         return "1083085389:AAE05uxN-yWvsPnDdRy5ehDnPGaeWr7K20Q";
     }
 
-    public synchronized void setButtons(SendMessage sendMessage) {
+    public synchronized void setButtons() {
         // Создаем клавиуатуру
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        //sendMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(false);
@@ -160,6 +161,7 @@ public class Bot extends TelegramLongPollingBot {
         if (bot == null) {
             bot = new Bot();
         }
+        bot.setButtons();
         return bot;
     }
 }
