@@ -30,7 +30,7 @@ public class Bot extends TelegramLongPollingBot {
         if(update.hasMessage()) {
             if(update.getMessage().getText().equals("Hello")){
                 try {
-                    execute(sendInlineKeyBoardMessage(update.getMessage().getChatId()));
+                    execute(sendInlineKeyBoardMessage(update.getMessage().getChatId(), update));
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
@@ -114,7 +114,7 @@ public class Bot extends TelegramLongPollingBot {
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
 
-    public static SendMessage sendInlineKeyBoardMessage(long chatId) {
+    public static SendMessage sendInlineKeyBoardMessage(long chatId, Update update) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
         InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
@@ -131,7 +131,8 @@ public class Bot extends TelegramLongPollingBot {
         rowList.add(keyboardButtonsRow1);
         rowList.add(keyboardButtonsRow2);
         inlineKeyboardMarkup.setKeyboard(rowList);
-        return new SendMessage().setChatId(chatId).setText("Пример").setReplyMarkup(inlineKeyboardMarkup);
+        String text = "Здравствуйте " + update.getMessage().getContact().getUserID();
+        return new SendMessage().setChatId(chatId).setText(text).setReplyMarkup(inlineKeyboardMarkup);
     }
 
     public synchronized void answerCallbackQuery(String callbackId, String message) {
