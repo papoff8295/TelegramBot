@@ -35,7 +35,7 @@ public class Bot extends TelegramLongPollingBot {
                     e.printStackTrace();
                 }
             } else {
-                String message =update.getMessage().getForwardFrom().getUserName() + update.getMessage().getText();
+                String message =update.getMessage().getForwardFrom().toString() + update.getMessage().getText();
                 sendMsg(update.getMessage().getChatId().toString(), message);
             }
         } else  if(update.hasCallbackQuery()) {
