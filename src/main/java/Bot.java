@@ -35,7 +35,7 @@ public class Bot extends TelegramLongPollingBot {
                     e.printStackTrace();
                 }
             } else {
-                String message =update.getMessage().getFrom().getUserName() + update.getMessage().getText();
+                String message = update.getMessage().getText();
                 sendMsg(update.getMessage().getChatId().toString(), message);
             }
         } else  if(update.hasCallbackQuery()) {
@@ -131,7 +131,7 @@ public class Bot extends TelegramLongPollingBot {
         rowList.add(keyboardButtonsRow1);
         rowList.add(keyboardButtonsRow2);
         inlineKeyboardMarkup.setKeyboard(rowList);
-        String text = "Здравствуйте " + update.getCallbackQuery().getFrom().getUserName();
+        String text = "Здравствуйте " + update.getMessage().getFrom().getUserName();
         return new SendMessage().setChatId(chatId).setText(text).setReplyMarkup(inlineKeyboardMarkup);
     }
 
