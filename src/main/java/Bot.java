@@ -60,7 +60,7 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(chatId);
         sendMessage.setText(s);
-        //setButtons(sendMessage);
+        setButtons(sendMessage);
 
         try {
             execute(sendMessage);
@@ -87,10 +87,10 @@ public class Bot extends TelegramLongPollingBot {
         return "1083085389:AAE05uxN-yWvsPnDdRy5ehDnPGaeWr7K20Q";
     }
 
-    public synchronized void setButtons() {
+    public synchronized void setButtons(SendMessage sendMessage) {
         // Создаем клавиуатуру
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        //sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(false);
@@ -161,7 +161,6 @@ public class Bot extends TelegramLongPollingBot {
         if (bot == null) {
             bot = new Bot();
         }
-        bot.setButtons();
         return bot;
     }
 }
