@@ -40,7 +40,7 @@ public class Bot extends TelegramLongPollingBot {
                     sendMsg(update.getMessage().getChatId().toString(), "Нахожусь в стадии тестирования, скоро отвечу.");
                 } else
 
-                sendMsg(update.getMessage().getChatId().toString(), "Невероятно, со мной разговаривают!");
+                sendMsg(update.getMessage().getChatId().toString(), "Невероятно, со мной разговариваю люди!");
             }
         } else  if(update.hasCallbackQuery()) {
             try {
