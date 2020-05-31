@@ -1,6 +1,7 @@
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.api.methods.BotApiMethod;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -8,7 +9,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
@@ -19,13 +20,39 @@ import java.util.logging.Level;
 import static org.telegram.telegrambots.logging.BotLogger.log;
 
 
-public class Bot extends TelegramLongPollingBot {
+public class Bot extends TelegramWebhookBot {
     private static Bot bot;
     /**
      * Метод для приема сообщений.
      * @param update Содержит сообщение от пользователя.
      */
+
     @Override
+    public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
+
+        return handleUpdate(update);
+    }
+    public SendMessage handleUpdate(Update update) {
+        SendMessage replyMessage = null;
+        if(update.hasMessage()) {
+            if(update.getMessage().getText().toLowerCase().equals("hello")){
+                replyMessage = sendInlineKeyBoardMessage(update.getMessage().getChatId(), update);
+            } else {
+                String message = update.getMessage().getText();
+                if (message.equals("Помощь") || message.equals("Привет")) {
+                    replyMessage = sendMsg(update.getMessage().getChatId().toString(), "Нахожусь в стадии тестирования, скоро отвечу.");
+                } else
+
+                    replyMessage = sendMsg(update.getMessage().getChatId().toString(), "Невероятно, со мной разговариваю люди!");
+            }
+        } else  if(update.hasCallbackQuery()) {
+            return new SendMessage().setText(
+                    update.getCallbackQuery().getData())
+                    .setChatId(update.getCallbackQuery().getMessage().getChatId());
+        }
+        return replyMessage;
+    }
+    /*@Override
         public void onUpdateReceived(Update update) {
         if(update.hasMessage()) {
             if(update.getMessage().getText().toLowerCase().equals("hello")){
@@ -51,30 +78,30 @@ public class Bot extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     /**
      * Метод для настройки сообщения и его отправки.
      * @param chatId id чата
      * @param s Строка, которую необходимот отправить в качестве сообщения.
      */
-    public synchronized void sendMsg(String chatId, String s) {
+    public synchronized SendMessage sendMsg(String chatId, String s) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(chatId);
         sendMessage.setText(s);
-        SendMessage sendMessage1 = new SendMessage();
-        sendMessage1.enableMarkdown(true);
-        sendMessage1.setChatId(chatId);
-        sendMessage1.setText("проверка");
-        setButtons(sendMessage1);
+
+        setButtons(sendMessage);
 
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
             log(Level.SEVERE, "Exception: ", e.toString());
         }
+        return sendMessage;
     }
+
+
 
     /**
      * Метод возвращает имя бота, указанное при регистрации.
@@ -93,6 +120,12 @@ public class Bot extends TelegramLongPollingBot {
     public String getBotToken() {
         return "1083085389:AAE05uxN-yWvsPnDdRy5ehDnPGaeWr7K20Q";
     }
+
+    @Override
+    public String getBotPath() {
+        return "https://telegrambot32.herokuapp.com/";
+    }
+
 
     public synchronized void setButtons(SendMessage sendMessage) {
         // Создаем клавиуатуру
