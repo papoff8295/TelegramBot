@@ -123,7 +123,7 @@ public class Bot extends TelegramWebhookBot {
 
     @Override
     public String getBotPath() {
-        return "https://telegrambot32.herokuapp.com/";
+        return "https://telegrambot32.herokuapp.com";
     }
 
 
