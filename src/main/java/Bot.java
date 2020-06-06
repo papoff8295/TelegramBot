@@ -109,7 +109,7 @@ public class Bot extends TelegramWebhookBot {
      */
     @Override
     public String getBotUsername() {
-        return "papoffBot";
+        return "@papoffBot";
     }
 
     /**
